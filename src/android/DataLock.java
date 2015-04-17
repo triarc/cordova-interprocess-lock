@@ -27,7 +27,7 @@ public class DataLock {
 		this.ownName = sourceName;
 	}
 
-	private ArrayList<FileInputStream> _readLockStreams = new ArrayList<FileInputStream>();
+	//private ArrayList<FileInputStream> _readLockStreams = new ArrayList<FileInputStream>();
 	private FileInputStream _writeLockStream;
 
 	public void aquire(LockType lockType) throws IOException {
@@ -83,7 +83,20 @@ public class DataLock {
 	}
 
 	private void releaseWrite() {
-		this.releaseRead(sourceName);
+		for (String sourceName : processSources) {
+			this.releaseRead(sourceName);
+		}
+		if (_writeLockStream != null){
+			try {
+				_writeLockStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				Log.e(TAG, "release write lock failed. from process => " + this.ownName);
+			}
+		} else {
+			Log.w(TAG, "write lock has already been release. from process => " + this.ownName);
+		}
 	}
 
 	private void releaseRead(String sourceName) {
@@ -99,6 +112,8 @@ public class DataLock {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		} else {
+			Log.w(TAG, "read lock already release for " + sourceName + ". process name=>" + this.ownName);
 		}
 	}
 

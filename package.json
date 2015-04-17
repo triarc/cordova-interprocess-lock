@@ -1,0 +1,22 @@
+{
+    "version": "0.0.1",
+    "name": "com.triarc.interprocesslock",
+    "cordova_name": "InterprocessLock",
+    "description": "Plugin that allows to lock android processes",
+    "license": "MIT",
+    "keywords": [
+        "cordova",
+        "phonegap",
+        "android",
+        "lock"
+    ],
+    "platforms": [
+        "android"
+    ],
+    "engines": [
+        {
+            "name": "cordova",
+            "version": ">=3.0.0"
+        }
+    ]
+}

@@ -45,8 +45,8 @@ public class InterprocessLock extends CordovaPlugin {
 
 	public static void release(Context context, String lockName, String sourceName, LockType lockType) {
 		synchronized (lockObject) {
-			DataLock orAdd = getOrAdd(lockName, context);
-			orAdd.release(sourceName, lockType);
+			DataLock orAdd = getOrAdd(lockName, context, sourceName);
+			orAdd.release(lockType);
 		}
 	}
 
@@ -58,6 +58,7 @@ public class InterprocessLock extends CordovaPlugin {
 		DataLock result = null;
 		if (!_dataLocks.containsKey(lockName)) {
 			result = new DataLock(lockName, context, sourceName);
+			_dataLocks.put(lockName, result);
 		} else {
 			result = _dataLocks.get(lockName);
 		}
@@ -67,9 +68,8 @@ public class InterprocessLock extends CordovaPlugin {
 	public static void lock(Context context, String lockName,
 			String sourceName, LockType lockType) throws IOException {
 		synchronized (lockObject) {
-			DataLock lockObj = getOrAdd(lockName, context);
-			lockObj.aquire(lockType, sourceName);
-
+			DataLock lockObj = getOrAdd(lockName, context, sourceName);
+			lockObj.aquire(lockType);
 		}
 	}
 
