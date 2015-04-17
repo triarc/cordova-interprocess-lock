@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="com.triarc.interprocessLock" version="0.0.1">
+    <name>InterprocessLock</name>
+    <description>Plugin that allows to lock android processes</description>
+    <license>MIT</license>
+    <keywords>cordova,phonegap,android,lock</keywords>
+    
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>
+
+    <js-module src="www/interprocessLock.js" name="interprocessLock">
+        <clobbers target="interprocessLock" />
+    </js-module>
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="InterprocessLock" >
+                <param name="android-package" value="com.triarc.InterprocessLock"/>
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/InterprocessLock.java" target-dir="src/com/triarc" />
+		<source-file src="src/android/DataLock.java" target-dir="src/com/triarc" />
+		<source-file src="src/android/LockType.java" target-dir="src/com/triarc" />
+    </platform>
+</plugin>
