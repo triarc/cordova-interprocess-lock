@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        id="com.triarc.interprocesslock" version="0.0.2">
+        id="com.triarc.interprocesslock" version="0.2.0">
     <name>InterprocessLock</name>
     <description>Plugin that allows to lock android processes</description>
     <license>MIT</license>
