@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class DataLock {
 	}
 
 	//private ArrayList<FileInputStream> _readLockStreams = new ArrayList<FileInputStream>();
-	private FileInputStream _writeLockStream;
+	private RandomAccessFile _writeLockStream;
 
 	public void aquire(LockType lockType) throws IOException {
 		if (lockType == LockType.read) {
@@ -50,7 +51,7 @@ public class DataLock {
 			this.aquireRead(sourceName);
 		}
 		File lockFile = getWriteLockFile();
-		_writeLockStream = new FileInputStream(lockFile);
+		_writeLockStream = new RandomAccessFile(lockFile, "rw");
 		_writeLockStream.getChannel().lock();
 	}
 
@@ -102,7 +103,7 @@ public class DataLock {
 	private void releaseRead(String sourceName) {
 		if (_readFileStreams.containsKey(sourceName)) {
 			try {
-				FileInputStream lockStream = _readFileStreams.get(sourceName);
+				RandomAccessFile lockStream = _readFileStreams.get(sourceName);
 				// this releases the lock
 				lockStream.close();
 				_readFileStreams.remove(sourceName);
@@ -123,10 +124,10 @@ public class DataLock {
 		lockFile(lockFile, sourceName);
 	}
 
-	private HashMap<String, FileInputStream> _readFileStreams = new HashMap<String, FileInputStream>();
+	private HashMap<String, RandomAccessFile> _readFileStreams = new HashMap<String, RandomAccessFile>();
 
 	private void lockFile(File file, String sourceName) throws IOException {
-		FileInputStream lockFileStream = new FileInputStream(file);
+		RandomAccessFile lockFileStream = new RandomAccessFile(file, "rw");
 		FileChannel channel = lockFileStream.getChannel();
 		channel.lock();
 		_readFileStreams.put(sourceName, lockFileStream);
